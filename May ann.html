@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher's Day Card - Sir Randy Bello</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; font-family:Arial, sans-serif;
+  background:linear-gradient(135deg,#fff1a8,#ffd6e7,#c9f7ff);
+  display:flex; justify-content:center; align-items:center; padding:20px;
+  overflow-x:hidden;
+}
+.card{
+  width:min(900px,100%); background:rgba(255,255,255,.94);
+  border-radius:28px; padding:28px; text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.18); position:relative; overflow:hidden;
+}
+.ribbon{font-size:44px; animation:bounce 2s infinite}
+h1{color:#b52b52;margin:8px 0;font-size:clamp(30px,6vw,54px)}
+.subtitle{color:#76505b;font-size:18px}
+.teacher{
+  font-size:32px;font-weight:bold;color:#176b5b;margin:14px 0;
+}
+.message{
+  font-size:20px;line-height:1.6;color:#333;margin:18px auto;max-width:720px;
+}
+.photo-wrap{
+  width:210px;height:210px;margin:18px auto;border-radius:50%;
+  border:8px solid #f6c85f;overflow:hidden;background:#f7f7f7;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+.photo-wrap img{width:100%;height:100%;object-fit:cover;display:none}
+.placeholder{color:#888;padding:20px}
+.controls{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:18px 0;
+}
+label,button{
+  border:0;border-radius:14px;padding:12px 16px;font-weight:bold;
+  cursor:pointer;background:#176b5b;color:white;
+}
+input[type=file]{display:none}
+textarea{
+  width:100%;max-width:700px;min-height:100px;padding:14px;
+  border:2px solid #f0c36b;border-radius:15px;font-size:16px;resize:vertical;
+}
+.confetti{position:absolute;top:-20px;animation:fall linear infinite;pointer-events:none}
+.float{position:absolute;font-size:30px;animation:float 4s ease-in-out infinite}
+.f1{left:4%;top:20%}.f2{right:5%;top:28%;animation-delay:1s}
+.f3{left:8%;bottom:10%;animation-delay:2s}.f4{right:8%;bottom:12%;animation-delay:.5s}
+.footer{margin-top:15px;color:#777;font-size:13px}
+@keyframes bounce{50%{transform:translateY(-8px) rotate(3deg)}}
+@keyframes float{50%{transform:translateY(-18px) rotate(8deg)}}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="float f1">🌸</div><div class="float f2">⭐</div>
+  <div class="float f3">📚</div><div class="float f4">🍎</div>
+
+  <div id="confettiBox"></div>
+  <div class="ribbon">🇵🇭 🌺 📚 🍎 🌺 🇵🇭</div>
+  <h1>Happy Teacher's Day!</h1>
+  <div class="subtitle">Isang espesyal na pasasalamat para sa aming guro</div>
+
+  <div class="teacher" id="teacherName">Sir Randy Bello</div>
+
+  <div class="photo-wrap">
+    <img id="teacherPhoto" alt="Teacher photo">
+    <div class="placeholder" id="placeholder">📷<br>Add Sir Randy's Photo</div>
+  </div>
+
+  <div class="controls">
+    <label for="gepopoy.jpg.jpg">📷 Add Photo</label>
+    <input id="gepopoy.jpg.jpg" type="gepopoy.jpg.jpg file" accept="image/*">
+
+    <label for="audioInput">🎵 Add Audio</label>
+    <input id="audioInput" type="file" accept="audio/*">
+
+    <button id="playBtn">▶ Play Audio</button>
+    <button id="effectBtn">✨ More Effects</button>
+  </div>
+
+  <textarea id="messageInput">Maraming salamat po, Sir Randy Bello, sa inyong walang sawang pagtuturo, paggabay, pasensya, at inspirasyon. Malaki po ang naitutulong ninyo sa amin. Happy Teacher's Day po! Mabuhay po kayo! ❤️</textarea>
+
+  <div class="message" id="messagePreview"></div>
+
+  <div class="footer">Made with ❤️ for Teacher's Day • Filipino-style animated greeting card</div>
+</div>
+
+<audio id="audio" controls style="display:none"></audio>
+
+<script>
+const photoInput=document.getElementById('photoInput');
+const photo=document.getElementById('teacherPhoto');
+const placeholder=document.getElementById('placeholder');
+const audioInput=document.getElementById('audioInput');
+const audio=document.getElementById('audio');
+const playBtn=document.getElementById('playBtn');
+const messageInput=document.getElementById('messageInput');
+const messagePreview=document.getElementById('messagePreview');
+const effectBtn=document.getElementById('effectBtn');
+const box=document.getElementById('confettiBox');
+
+photoInput.addEventListener('change',e=>{
+  const file=e.target.files[0]; if(!file)return;
+  photo.src=URL.createObjectURL(file);
+  photo.style.display='block'; placeholder.style.display='none';
+});
+audioInput.addEventListener('change',e=>{
+  const file=e.target.files[0]; if(!file)return;
+  audio.src=URL.createObjectURL(file);
+  audio.style.display='block';
+});
+playBtn.addEventListener('click',()=>{
+  if(!audio.src){alert('Please add an audio file first.');return}
+  if(audio.paused){audio.play();playBtn.textContent='⏸ Pause Audio'}
+  else{audio.pause();playBtn.textContent='▶ Play Audio'}
+});
+audio.addEventListener('ended',()=>playBtn.textContent='▶ Play Audio');
+
+function updateMessage(){messagePreview.textContent=messageInput.value}
+messageInput.addEventListener('input',updateMessage); updateMessage();
+
+function makeConfetti(){
+  const emojis=['🌸','❤️','⭐','✨','🎉','📚','🍎','🇵🇭'];
+  for(let i=0;i<35;i++){
+    const s=document.createElement('span');
+    s.className='confetti';
+    s.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    s.style.left=Math.random()*100+'%';
+    s.style.animationDuration=(3+Math.random()*5)+'s';
+    s.style.animationDelay=Math.random()*2+'s';
+    s.style.fontSize=(14+Math.random()*18)+'px';
+    box.appendChild(s);
+    setTimeout(()=>s.remove(),9000);
+  }
+}
+effectBtn.addEventListener('click',makeConfetti);
+makeConfetti();
+</script>
+</body>
+</html>
